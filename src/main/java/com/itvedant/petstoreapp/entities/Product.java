@@ -1,13 +1,23 @@
 package com.itvedant.petstoreapp.entities;
-
+import java.time.Instant;
 import java.time.LocalDate;
 
+import java.util.List;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -17,6 +27,7 @@ import lombok.Data;
 
 @Data
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -40,6 +51,29 @@ public class Product {
     //@FutureorPresent
     @PastOrPresent
     private LocalDate manufacturingDate;
+
+    @CreatedDate
+    @Column(updatable = false)
+    private Instant createdDate;
+
+    @LastModifiedDate
+    private Instant updatedDate;
     
+    //In the case of ManyToOne/OneToMany
+    //Entity which contains ManyToOne relationship
+    //will get the foriegn key column
+    @ManyToOne
+    @JoinColumn(name = "categoryid")
+    private Category productCategory;
+
+    @ManyToMany
+    @JoinTable(name ="product_orders",
+                joinColumns = @JoinColumn(name ="productid",
+                                        referencedColumnName ="id"),
+                inverseJoinColumns = @JoinColumn(name ="orderid",
+                                        referencedColumnName ="id"))
+    private List<Orders> orders;
+
+    private String imageUrl;
     
 }

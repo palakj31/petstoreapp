@@ -16,7 +16,7 @@ import com.itvedant.petstoreapp.services.UserService;
 
 import jakarta.validation.Valid;
 
-@RestController
+//@RestController
 public class UserController {
     @Autowired
     private UserService service;

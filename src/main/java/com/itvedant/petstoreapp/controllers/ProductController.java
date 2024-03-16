@@ -20,7 +20,7 @@ import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
-@RestController
+//@RestController
 public class ProductController {
 
     @Autowired
@@ -56,7 +56,7 @@ public class ProductController {
             return ResponseEntity.ok(findProduct);
 
     }
-    @RequestMapping(path = "/product/{id}",method = RequestMethod.PUT )
+    @RequestMapping(path = "/products/{id}",method = RequestMethod.PUT )
      public ResponseEntity<?> updateProduct(@PathVariable Integer id, @RequestBody Product prod){
             Product findProduct = this.service.getProduct(id);
             if(findProduct == null)

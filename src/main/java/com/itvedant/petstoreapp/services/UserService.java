@@ -6,41 +6,38 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.itvedant.petstoreapp.entities.User;
+import com.itvedant.petstoreapp.repositories.UserRepository;
 
 @Service
 public class UserService {
-    private Map<Integer, User> users = new HashMap<>();
-
-    private AtomicInteger atomic = new AtomicInteger(0);
+    
+    @Autowired
+    private UserRepository userRepository;
     
  
     public User addUser(User newUser){
-        newUser.setId(atomic.incrementAndGet());
-        users.put(newUser.getId(), newUser);
-        return newUser;
+        return this.userRepository.save(newUser);
     }
 
-    public List<User> getAll(){
-        return new ArrayList<User>(users.values());
+    public Iterable<User> getAll(){
+        return this.userRepository.findAll();
     }
 
     public User getUser(Integer id){
-        return users.get(id);
+        return this.userRepository.findById(id).orElse(null);
     }
 
     public String deleteUser(Integer id){
-        users.remove(id);
+        this.userRepository.deleteById(id);
         return "User Deleted";
     }
     public User updateUser(Integer id, User updateUser){
         updateUser.setId(id);
-        users.put(id, updateUser);
-        return updateUser;
+        return this.userRepository.save(updateUser);
     }
 
 }
