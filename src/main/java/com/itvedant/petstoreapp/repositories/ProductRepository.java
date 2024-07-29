@@ -6,6 +6,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.rest.core.annotation.RestResource;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import com.itvedant.petstoreapp.entities.Product;
 
@@ -13,7 +14,7 @@ import jakarta.annotation.security.RolesAllowed;
 
 import java.util.List;
 
-
+@CrossOrigin(origins = {"*"}, maxAge = 4800, allowCredentials = "false" )
 public interface ProductRepository 
     extends JpaRepository<Product, Integer>{
     //this method will create a select query
